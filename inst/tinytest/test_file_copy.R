@@ -1,0 +1,46 @@
+if (interactive()) {
+  pkgload::load_all()
+  library("tinytest")
+}
+
+
+f1 <- file.path(tempdir(), "first.R")
+f2 <- file.path(tempdir(), "second.R")
+expect_true(isFALSE(file_copy(f2, f1)))
+touch(f1)
+touch(f2)
+touch(f2) # make sure that f2 is newer than f1
+expect_true(isFALSE(file_copy(f1, f2, stop_on_error = FALSE)))
+expect_error(file_copy(f1, f2, stop_on_error = TRUE))
+expect_true(file_copy(f2, f1))
+file_names <- list.files(tempdir(), pattern = "first.*\\.R")
+expect_identical(length(file_names), 2L)
+pattern <- "first_[0-9]{4}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}\\.R"
+expect_true(any(grepl(pattern, file_names)))
+dir <- file.path(tempdir(), "subdir")
+dir.create(dir)
+file_copy(f1, dir)
+file_names <- list.files(dir, pattern = "first.*\\.R")
+expect_identical(length(file_names), 1L)
+expect_identical("first.R", file_names)
+Sys.sleep(1)
+touch(f1)
+expect_true(file_copy(f1, dir))
+file_names <- list.files(dir, pattern = "first.*\\.R")
+expect_identical(length(file_names), 2L)
+expect_true(any(grepl(pattern, file_names)))
+expectation <- c(FALSE, TRUE)
+result <- file_copy(c(f1, f2), dir)
+if (interactive()) {
+  print(result)
+  print(expectation)
+  print("#%% times")
+  print(sapply(dir(dir, full.names = TRUE), file.mtime))
+  print(sapply(list(f1, f2), file.mtime))
+}
+expect_identical(result, expectation)
+Sys.sleep(1)
+touch(f1)
+expectation <- c(TRUE, FALSE)
+result <- file_copy(c(f1, f2), dir, stop_on_error = FALSE)
+expect_identical(result, expectation)

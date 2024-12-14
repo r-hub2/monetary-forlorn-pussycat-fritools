@@ -1,0 +1,4 @@
+This is a line with two trailing blanks.  
+This line has no trailing blanks but the file has two trailings blank lines.
+
+

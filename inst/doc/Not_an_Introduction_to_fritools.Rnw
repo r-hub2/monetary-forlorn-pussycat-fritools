@@ -1,0 +1,60 @@
+%\VignetteIndexEntry{Not an Introduction to fritools}
+\documentclass[a4paper]{article}
+\bibliographystyle{unsrt}
+\usepackage{listings}
+\lstset{ %
+basicstyle=\footnotesize
+, commentstyle=\color{PineGreen}
+, numberstyle=\tiny\color{Gray}
+, rulecolor=\color{Black}
+, keywordstyle=\color{Blue}
+, stringstyle=\color{Sepia}
+, showstringspaces=false
+, language=R
+}
+\usepackage[%
+    colorlinks=true,
+    pdfborder={0 0 0},
+    linkcolor=blue
+]{hyperref}
+
+\usepackage[utf8]{inputenc}
+\title{Not an Introduction to fritools}
+\author{Andreas Dominik Cullmann}
+
+\SweaveOpts{echo=false}
+\SweaveOpts{eval=false}
+\SweaveOpts{print=false}
+\SweaveOpts{width=4.5}
+\SweaveOpts{height=5}
+\begin{document}
+\maketitle
+
+This is not a vignette at all as \emph{fritools} is just a set of
+miscellaneous utilities, tools and helper functions written for the
+Forest Research Institute of the State Baden-Wuerttemberg, Germany.
+
+ \emph{fritools} does not use any other packages than those in the R Core.
+It does not import or depend on any third party package.
+
+
+All functions belong to at least one of these families:
+<<missings, echo = TRUE, eval = TRUE, fig=FALSE>>==
+path <- system.file(package = "fritools")
+if (file.exists(file.path(path, "source")))
+    path <- file.path(path, "source")
+fmsa <- fritools::find_missing_see_also
+f <- capture.output(type = "message",
+                    missing <- suppressWarnings(fmsa(path = path,
+                                                     list_families = TRUE)))
+print(f)
+if (length(missing) > 1) {
+    print(missing)
+    stop("Functions without context.")
+} else {
+    print("All functions with context.")
+}
+@
+That's all.
+
+\end{document}

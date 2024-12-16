@@ -25,6 +25,6 @@ RoxygenNote: 7.3.2
 VignetteBuilder: utils
 Config/testthat/edition: 3
 NeedsCompilation: no
-Packaged: 2024-12-14 23:15:51 UTC; qwer
+Packaged: 2024-12-16 07:31:06 UTC; qwer
 Author: Andreas Dominik Cullmann [aut, cre]
 Maintainer: Andreas Dominik Cullmann <fvafrcu@mailbox.org>

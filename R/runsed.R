@@ -31,7 +31,8 @@ runsed <- function(files, pattern, replacement) {
         before <- readLines(con = f)
         after <- gsub(pattern = pattern, replacement = replacement, x = before)
         if (identical(before, after)) {
-            res <- res[!grepl(pattern = f, x = res)]
+            res <- res[!grepl(pattern = normalizePath(f, winslash = "/"),
+                              x = normalizePath(res, winslash = "/"))]
         } else {
             writeLines(text = after, con = f)
         }
